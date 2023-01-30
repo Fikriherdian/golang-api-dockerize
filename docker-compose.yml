@@ -1,0 +1,36 @@
+
+version: '3.7'
+
+
+services:
+  golangsimpleapi:
+    image: fikriherdian/golangsimpleapi
+    restart: always
+    ports:
+      - 8180:8180
+    
+    stdin_open: true
+    environment:
+      DB_HOST: db
+      DB_PORT: 5435
+      DB_USER: postgresq
+      DB_PASS: fikri
+      DB_NAME: fiber_demo
+      DB_SSLMODE: disable
+    links:
+      - db
+    depends_on:
+      - db
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=posgres
+      - POSTGRES_PASSWORD=fikri
+    ports:
+      - '5435:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
+    driver: local
